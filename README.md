@@ -1,10 +1,5 @@
 # Analyse du risque de défaut de paiement sur cartes de crédit
 
-
-<p align="right">
-    <img src="https://github.com/user-attachments/assets/beefdb17-7ee5-4864-b8cb-014f00ab10bf" width='400' height="300"/>
-</p>
-
 ## À propos du dataset
 
 Ce projet est basé sur le dataset public **"Default of Credit Card Clients"**, publié par l’[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients).
@@ -55,3 +50,8 @@ Voici les grandes étapes que vous retrouverez dans le notebook :
 6. **Conclusion**
    - Résumé des résultats
    - Limites et pistes d'amélioration
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/2cc2c6ed-9c12-4417-aadb-5bc511d0a80e" width='600' height="400"/>
+</p>
+  
