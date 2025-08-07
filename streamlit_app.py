@@ -57,14 +57,14 @@ with tab1:
         education = st.selectbox("🎓 Niveau d'éducation", options=[1, 2, 3, 4], format_func=lambda x: {1: "Université", 2: "École Supérieure", 3: "Lycée", 4: "Autre"}[x])
         marriage = st.selectbox("💍 Statut marital", options=[1, 2, 3], format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}[x])
         age = st.number_input("🎂 Âge", min_value=18, max_value=100, step=1, value=35)
-        pay_0 = st.number_input("Historique paiement PAY_0 (Dernier mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_2 = st.number_input("Historique paiement PAY_2 (-2 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_3 = st.number_input("Historique paiement PAY_3 (-3 mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_0 = st.number_input("Historique paiement (Remboursement) PAY_0 (Dernier mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_2 = st.number_input("Historique paiement (Remboursement) PAY_2 (-2 mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_3 = st.number_input("Historique paiement (Remboursement) PAY_3 (-3 mois)", min_value=-2, max_value=9, step=1, value=0)
 
     with col2:
-        pay_4 = st.number_input("Historique paiement PAY_4 (-4 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_5 = st.number_input("Historique paiement PAY_5 (-5 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_6 = st.number_input("Historique paiement PAY_6 (-6 mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_4 = st.number_input("Historique paiement (Remboursement) PAY_4 (-4 mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_5 = st.number_input("Historique paiement (Remboursement) PAY_5 (-5 mois)", min_value=-2, max_value=9, step=1, value=0)
+        pay_6 = st.number_input("Historique paiement (Remboursement) PAY_6 (-6 mois)", min_value=-2, max_value=9, step=1, value=0)
         bill_amt1 = st.number_input("Montant facture BILL_AMT1 (Dernier mois)", step=1000, value=0)
         bill_amt2 = st.number_input("Montant facture BILL_AMT2 (-1 mois)", step=1000, value=0)
         bill_amt3 = st.number_input("Montant facture BILL_AMT3 (-2 mois)", step=1000, value=0)
@@ -142,5 +142,6 @@ with tab1:
         else:
             st.success(f"✅ Faible risque de défaut.\nProbabilité estimée : {probability:.2%}")
             st.info("Bonne gestion ! Continuez à maintenir votre profil sain.")
+
 
 
