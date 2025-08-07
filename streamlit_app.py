@@ -4,7 +4,7 @@ import numpy as np
 import joblib
 
 # === Charger le modèle et la liste des features ===
-model = joblib.load("xgboost_credit_model.pkl")
+model, feature_names = joblib.load("xgboost_credit_model.pkl")
 
 st.title("💳 Prédiction du Risque de Défaut de Paiement (XGBoost)")
 st.markdown("Remplissez les informations ci-dessous pour évaluer le risque de crédit.")
@@ -73,4 +73,3 @@ if st.button("Prédire"):
         st.error(f"⚠️ Risque élevé de défaut. Probabilité : {probability:.2%}")
     else:
         st.success(f"✅ Faible risque de défaut. Probabilité : {probability:.2%}")
-
