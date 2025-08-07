@@ -3,145 +3,106 @@ import pandas as pd
 import joblib
 import plotly.graph_objects as go
 
-# === Config page + style bouton ===
-st.set_page_config(page_title=" Risque de Défaut de Paiement", layout="wide")
-
-BUTTON_STYLE = """
-    <style>
-    div.stButton > button {
-        background-color: #0099ff;
-        color: white;
-        font-size: 18px;
-        height: 50px;
-        width: 200px;
-        border-radius: 10px;
-        font-weight: bold;
-        margin: auto;
-        display: block;
-    }
-    div.stButton > button:hover {
-        background-color: #007acc;
-        color: #fff;
-    }
-    </style>
-"""
-st.markdown(BUTTON_STYLE, unsafe_allow_html=True)
-
-# === Charger le modèle et features ===
+# === Charger le modèle et les noms de variables ===
 model, feature_names = joblib.load("xgboost_credit_model.pkl")
 
-# === Onglets ===
-tab1, tab2 = st.tabs(["💡 Prédiction", "ℹ️ À propos"])
+# === Titre et instructions ===
+st.set_page_config(page_title="Risque de Défaut de Paiement", layout="wide")
+st.title("💳 Prédiction du Risque de Défaut de Paiement (XGBoost)")
+st.markdown("Remplissez les informations ci-dessous pour évaluer le risque de crédit d'un client.")
 
-with tab2:
-    st.title("À propos de l'application")
-    st.markdown("""
-    Cette application prédit le risque de défaut de paiement sur carte de crédit grâce à un modèle XGBoost.
-    
-    - **Données** : 30,000 clients avec 23 variables explicatives.
-    - **Variables clés** : Limite de crédit, historique des paiements, montants dus, etc.
-    - **Interprétation** : La prédiction renvoie un risque élevé ou faible avec une probabilité associée.
-    
-    Utilisez l'onglet Prédiction pour entrer vos données.
-    """)
+# === Mise en page : deux colonnes ===
+col1, col2 = st.columns(2)
 
-with tab1:
-    st.title("💳 Prédiction du Risque de Défaut")
+with col1:
+    limit_bal = st.number_input("💰 Crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1000000, step=10000)
+    sex = st.selectbox("🧍 Sexe", options=[1, 2], format_func=lambda x: {1: "Homme", 2: "Femme"}.get(x))
+    education = st.selectbox("🎓 Niveau d'éducation", options=[1, 2, 3, 4],
+                             format_func=lambda x: {1: "Université", 2: "École Supérieure", 3: "Lycée", 4: "Autre"}.get(x))
+    marriage = st.selectbox("💍 Statut marital", options=[1, 2, 3],
+                            format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}.get(x))
+    age = st.number_input("🎂 Âge", min_value=18, max_value=100, step=1)
 
-    # === Inputs en 2 colonnes pour moins de scroll ===
-    col1, col2 = st.columns(2)
+with col2:
+    pay_0 = st.number_input("📆 Retard paiement septembre (PAY_0)", min_value=-2, max_value=9, step=1)
+    pay_2 = st.number_input("📆 Retard paiement août (PAY_2)", min_value=-2, max_value=9, step=1)
+    pay_3 = st.number_input("📆 Retard paiement juillet (PAY_3)", min_value=-2, max_value=9, step=1)
+    pay_4 = st.number_input("📆 Retard paiement juin (PAY_4)", min_value=-2, max_value=9, step=1)
+    pay_5 = st.number_input("📆 Retard paiement mai (PAY_5)", min_value=-2, max_value=9, step=1)
+    pay_6 = st.number_input("📆 Retard paiement avril (PAY_6)", min_value=-2, max_value=9, step=1)
 
-    with col1:
-        limit_bal = st.number_input("💰 Montant de crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1_000_000, step=10_000, value=500_000)
-        sex = st.selectbox("👤 Sexe", options=[1, 2], format_func=lambda x: {1: "Homme", 2: "Femme"}[x])
-        education = st.selectbox("🎓 Niveau d'éducation", options=[1, 2, 3, 4], format_func=lambda x: {1: "Université", 2: "École Supérieure", 3: "Lycée", 4: "Autre"}[x])
-        marriage = st.selectbox("💍 Statut marital", options=[1, 2, 3], format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}[x])
-        age = st.number_input("🎂 Âge", min_value=18, max_value=100, step=1, value=35)
-        pay_0 = st.number_input("Historique paiement (Remboursement) PAY_0 (Dernier mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_2 = st.number_input("Historique paiement (Remboursement) PAY_2 (-2 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_3 = st.number_input("Historique paiement (Remboursement) PAY_3 (-3 mois)", min_value=-2, max_value=9, step=1, value=0)
+# === Section secondaire : montants des factures et paiements ===
+with st.expander("💸 Détails des montants de factures et paiements (cliquer pour développer)", expanded=False):
+    bill_amt1 = st.number_input("📄 Montant facture septembre (BILL_AMT1)", step=1000)
+    bill_amt2 = st.number_input("📄 Montant facture août (BILL_AMT2)", step=1000)
+    bill_amt3 = st.number_input("📄 Montant facture juillet (BILL_AMT3)", step=1000)
+    bill_amt4 = st.number_input("📄 Montant facture juin (BILL_AMT4)", step=1000)
+    bill_amt5 = st.number_input("📄 Montant facture mai (BILL_AMT5)", step=1000)
+    bill_amt6 = st.number_input("📄 Montant facture avril (BILL_AMT6)", step=1000)
 
-    with col2:
-        pay_4 = st.number_input("Historique paiement (Remboursement) PAY_4 (-4 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_5 = st.number_input("Historique paiement (Remboursement) PAY_5 (-5 mois)", min_value=-2, max_value=9, step=1, value=0)
-        pay_6 = st.number_input("Historique paiement (Remboursement) PAY_6 (-6 mois)", min_value=-2, max_value=9, step=1, value=0)
-        bill_amt1 = st.number_input("Montant facture BILL_AMT1 (Dernier mois)", step=1000, value=0)
-        bill_amt2 = st.number_input("Montant facture BILL_AMT2 (-1 mois)", step=1000, value=0)
-        bill_amt3 = st.number_input("Montant facture BILL_AMT3 (-2 mois)", step=1000, value=0)
-        bill_amt4 = st.number_input("Montant facture BILL_AMT4 (-3 mois)", step=1000, value=0)
-        bill_amt5 = st.number_input("Montant facture BILL_AMT5 (-4 mois)", step=1000, value=0)
-        bill_amt6 = st.number_input("Montant facture BILL_AMT6 (-5 mois)", step=1000, value=0)
+    pay_amt1 = st.number_input("💵 Paiement effectué septembre (PAY_AMT1)", step=1000)
+    pay_amt2 = st.number_input("💵 Paiement effectué août (PAY_AMT2)", step=1000)
+    pay_amt3 = st.number_input("💵 Paiement effectué juillet (PAY_AMT3)", step=1000)
+    pay_amt4 = st.number_input("💵 Paiement effectué juin (PAY_AMT4)", step=1000)
+    pay_amt5 = st.number_input("💵 Paiement effectué mai (PAY_AMT5)", step=1000)
+    pay_amt6 = st.number_input("💵 Paiement effectué avril (PAY_AMT6)", step=1000)
 
-    # PAY_AMT (paiements)
-    pay_amt1 = st.number_input("Paiement PAY_AMT1 (Dernier mois)", step=1000, value=0)
-    pay_amt2 = st.number_input("Paiement PAY_AMT2 (-1 mois)", step=1000, value=0)
-    pay_amt3 = st.number_input("Paiement PAY_AMT3 (-2 mois)", step=1000, value=0)
-    pay_amt4 = st.number_input("Paiement PAY_AMT4 (-3 mois)", step=1000, value=0)
-    pay_amt5 = st.number_input("Paiement PAY_AMT5 (-4 mois)", step=1000, value=0)
-    pay_amt6 = st.number_input("Paiement PAY_AMT6 (-5 mois)", step=1000, value=0)
+# === Rassembler toutes les données utilisateur ===
+user_data = pd.DataFrame([{
+    'LIMIT_BAL': limit_bal,
+    'SEX': sex,
+    'EDUCATION': education,
+    'MARRIAGE': marriage,
+    'AGE': age,
+    'PAY_0': pay_0,
+    'PAY_2': pay_2,
+    'PAY_3': pay_3,
+    'PAY_4': pay_4,
+    'PAY_5': pay_5,
+    'PAY_6': pay_6,
+    'BILL_AMT1': bill_amt1,
+    'BILL_AMT2': bill_amt2,
+    'BILL_AMT3': bill_amt3,
+    'BILL_AMT4': bill_amt4,
+    'BILL_AMT5': bill_amt5,
+    'BILL_AMT6': bill_amt6,
+    'PAY_AMT1': pay_amt1,
+    'PAY_AMT2': pay_amt2,
+    'PAY_AMT3': pay_amt3,
+    'PAY_AMT4': pay_amt4,
+    'PAY_AMT5': pay_amt5,
+    'PAY_AMT6': pay_amt6
+}])
 
-    # Créer dataframe input
-    user_data = pd.DataFrame([{
-        'LIMIT_BAL': limit_bal,
-        'SEX': sex,
-        'EDUCATION': education,
-        'MARRIAGE': marriage,
-        'AGE': age,
-        'PAY_0': pay_0,
-        'PAY_2': pay_2,
-        'PAY_3': pay_3,
-        'PAY_4': pay_4,
-        'PAY_5': pay_5,
-        'PAY_6': pay_6,
-        'BILL_AMT1': bill_amt1,
-        'BILL_AMT2': bill_amt2,
-        'BILL_AMT3': bill_amt3,
-        'BILL_AMT4': bill_amt4,
-        'BILL_AMT5': bill_amt5,
-        'BILL_AMT6': bill_amt6,
-        'PAY_AMT1': pay_amt1,
-        'PAY_AMT2': pay_amt2,
-        'PAY_AMT3': pay_amt3,
-        'PAY_AMT4': pay_amt4,
-        'PAY_AMT5': pay_amt5,
-        'PAY_AMT6': pay_amt6
-    }])
+# Réorganiser les colonnes
+user_data = user_data[feature_names]
 
-    # Réorganiser colonnes selon modèle
-    user_data = user_data[feature_names]
+# === Prédiction ===
+predict_btn = st.button("🔍 Évaluer le risque", use_container_width=True)
 
-    # Bouton de prédiction
-    if st.button("Calculer le risque de défaut"):
-        prediction = model.predict(user_data)[0]
-        probability = model.predict_proba(user_data)[0][1]
+if predict_btn:
+    prediction = model.predict(user_data)[0]
+    probability = model.predict_proba(user_data)[0][1]  # proba d'être en défaut
 
-        # Affichage jauge Plotly
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = probability * 100,
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            title = {'text': "Probabilité de défaut (%)", 'font': {'size': 24}},
-            delta = {'reference': 50, 'increasing': {'color': "red"}},
-            gauge = {
-                'axis': {'range': [0, 100]},
-                'bar': {'color': "darkblue"},
-                'steps' : [
-                    {'range': [0, 50], 'color': "lightgreen"},
-                    {'range': [50, 100], 'color': "lightcoral"}],
-                'threshold' : {
-                    'line': {'color': "red", 'width': 4},
-                    'thickness': 0.75,
-                    'value': 50}}))
+    if prediction == 1:
+        st.error(f"🚨 **Risque ÉLEVÉ** de défaut de paiement.")
+    else:
+        st.success(f"✅ **Faible risque** de défaut de paiement.")
 
-        st.plotly_chart(fig, use_container_width=True)
-
-        # Message personnalisé
-        if prediction == 1:
-            st.error(f"⚠️ Attention, risque élevé de défaut !\nProbabilité estimée : {probability:.2%}")
-            st.info("Conseil : Essayez de réduire votre endettement et payez vos factures à temps.")
-        else:
-            st.success(f"✅ Faible risque de défaut.\nProbabilité estimée : {probability:.2%}")
-            st.info("Bonne gestion ! Continuez à maintenir votre profil sain.")
-
-
+    st.markdown("### 🔢 Probabilité de défaut :")
+    # Jauge avec Plotly
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=probability * 100,
+        title={'text': "Probabilité (%)"},
+        gauge={
+            'axis': {'range': [0, 100]},
+            'bar': {'color': "red" if prediction == 1 else "green"},
+            'steps': [
+                {'range': [0, 50], 'color': "#DFF0D8"},
+                {'range': [50, 100], 'color': "#F2DEDE"}
+            ]
+        }
+    ))
+    st.plotly_chart(fig, use_container_width=True)
 
