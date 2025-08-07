@@ -6,7 +6,7 @@ import joblib
 # === Charger le modèle et la liste des features ===
 model, feature_names = joblib.load("xgboost_credit_model.pkl")
 
-st.title("💳 Prédiction du Risque de Défaut de Paiement (XGBoost)")
+st.title(" Prédiction du Risque de Défaut de Paiement (XGBoost)")
 st.markdown("Remplissez les informations ci-dessous pour évaluer le risque de crédit.")
 
 # === Interface utilisateur ===
@@ -70,6 +70,7 @@ if st.button("Prédire"):
     probability = model.predict_proba(user_data)[0][1]
 
     if prediction == 1:
-        st.error(f"⚠️ Risque élevé de défaut. Probabilité : {probability:.2%}")
+        st.error(f" Risque élevé de défaut. Probabilité : {probability:.2%}")
     else:
-        st.success(f"✅ Faible risque de défaut. Probabilité : {probability:.2%}")
+        st.success(f"Faible risque de défaut. Probabilité : {probability:.2%}")
+
