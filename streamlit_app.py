@@ -4,7 +4,7 @@ import joblib
 import plotly.graph_objects as go
 
 # === Config page + style bouton ===
-st.set_page_config(page_title="💳 Risque de Défaut de Paiement", layout="wide")
+st.set_page_config(page_title=" Risque de Défaut de Paiement", layout="wide")
 
 BUTTON_STYLE = """
     <style>
@@ -142,4 +142,5 @@ with tab1:
         else:
             st.success(f"✅ Faible risque de défaut.\nProbabilité estimée : {probability:.2%}")
             st.info("Bonne gestion ! Continuez à maintenir votre profil sain.")
+
 
