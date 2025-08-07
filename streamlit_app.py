@@ -70,6 +70,19 @@ user_data = pd.DataFrame([{
 # Réorganiser les colonnes pour correspondre au modèle
 user_data = user_data[feature_names]
 
+# 💅 Style du bouton
+st.markdown("""
+    <style>
+        div.stButton > button {
+            font-size: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # === Prédiction ===
 if st.button("🎯 Prédire"):
     prediction = model.predict(user_data)[0]
@@ -80,4 +93,6 @@ if st.button("🎯 Prédire"):
         st.error(f"⚠️ Risque ÉLEVÉ de défaut.\n\nProbabilité : **{probability:.2%}**")
     else:
         st.success(f"✅ Faible risque de défaut.\n\nProbabilité : **{probability:.2%}**")
+        
+
 
