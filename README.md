@@ -2,7 +2,7 @@
 
 ## 🔗 Accès à l'application Streamlit
 
-👉 [Tester l'application ici](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app/)
+👉 Tester l'application [ici](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app/)
 
 ---
 
