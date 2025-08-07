@@ -84,7 +84,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # === Prédiction ===
-if st.button("🎯 Prédire"):
+if st.button("🎯 Prédire : Évaluer le risque"):
     prediction = model.predict(user_data)[0]
     probability = model.predict_proba(user_data)[0][1]
 
@@ -94,5 +94,6 @@ if st.button("🎯 Prédire"):
     else:
         st.success(f"✅ Faible risque de défaut.\n\nProbabilité : **{probability:.2%}**")
         
+
 
 
