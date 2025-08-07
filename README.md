@@ -1,57 +1,94 @@
-# Analyse du risque de défaut de paiement sur cartes de crédit
+# 💳 Analyse du Risque de Défaut de Paiement sur Cartes de Crédit
 
-## À propos du dataset
+## 🔗 Accès à l'application Streamlit
 
-Ce projet est basé sur le dataset public **"Default of Credit Card Clients"**, publié par l’[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients).
+👉 [Tester l'application ici](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app/)
 
-Le jeu de données contient des informations sur les paiements par carte de crédit de 30 000 clients à Taïwan, enregistrées entre avril et septembre 2005.Il comporte 25 variables décrivant les caractéristiques démographiques, les historiques de paiements, les montants facturés et remboursés, ainsi qu’une variable cible indiquant si le client a fait défaut le mois suivant.
+---
 
-### Source officielle :
-UCI Machine Learning Repository – [https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
+## 📁 À propos du dataset
 
-### Remerciements :
- > Lichman, M. (2013). UCI Machine Learning Repository. Irvine, CA: University of California, School of Information and Computer Science.
+Ce projet repose sur le dataset public **"Default of Credit Card Clients"**, proposé par l’[UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients).  
+Il contient les informations de **30 000 clients** de cartes de crédit à Taïwan, enregistrées entre avril et septembre 2005.
 
-## Problématique
+Le jeu de données inclut :
+- Des données **démographiques** (âge, sexe, statut marital, éducation…)
+- L’**historique de paiement** sur 6 mois (`PAY_0`, ..., `PAY_6`)
+- Les **montants facturés** (`BILL_AMT1` à `BILL_AMT6`)
+- Les **paiements effectués** (`PAY_AMT1` à `PAY_AMT6`)
+- Une variable cible : `default_payment_next_month` (1 = défaut, 0 = non-défaut)
 
-Les établissements de crédit cherchent constamment à évaluer le risque que représente chaque client. Identifier à l'avance les clients susceptibles de faire défaut permet de limiter les pertes financières.
+📚 **Référence** :  
+Lichman, M. (2013). *UCI Machine Learning Repository*. University of California, Irvine.
 
-**Problème posé** :  
-Peut-on prédire si un client fera défaut de paiement le mois suivant en se basant sur ses caractéristiques démographiques, son historique de paiements et ses habitudes financières ?
+---
 
-L’objectif de ce projet est donc de construire un modèle de machine learning capable de prédire le défaut de paiement, afin d'aider à la prise de décision en matière d'octroi de crédit.
+## ❓ Problématique
 
-## Objectifs et étapes du projet
+Les établissements financiers doivent pouvoir **évaluer le risque de crédit** de leurs clients pour limiter les défauts de paiement.
 
-Voici les grandes étapes que vous retrouverez dans le notebook :
+> **Question centrale** :  
+> _Peut-on prédire le défaut de paiement d’un client le mois suivant, à partir de ses données démographiques et historiques financiers ?_
 
-1. **Présentation et compréhension du dataset**
-   - Description des variables
-   - Analyse des valeurs manquantes et des types
+---
 
-2. **Analyse exploratoire des données (EDA)**
-   - Étude des distributions
-   - Visualisation des relations entre variables
-   - Corrélations avec la variable cible
+## 🎯 Objectifs du projet
 
-3. **Préparation des données**
-   - Nettoyage
-   - Encodage des variables catégorielles
-   - Normalisation / standardisation
+Développer un modèle de **Machine Learning** capable de :
 
-4. **Modélisation**
-   - Entraînement de plusieurs modèles (régression logistique, arbre de décision, random forest, etc.)
-   - Évaluation des performances (accuracy, précision, rappel, AUC...)
+✅ Prédire la probabilité qu’un client fasse défaut  
+✅ Identifier les variables les plus influentes  
+✅ Aider à la prise de décision pour l’octroi de crédit  
 
-5. **Interprétation des résultats**
-   - Importance des variables
-   - Explicabilité avec SHAP (si applicable)
+---
 
-6. **Conclusion**
-   - Résumé des résultats
-   - Limites et pistes d'amélioration
+## 🧪 Étapes du projet
 
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/2cc2c6ed-9c12-4417-aadb-5bc511d0a80e" width='600' height="400"/>
-</p>
-  
+1. **📂 Compréhension du dataset**  
+   Description, types de variables, données manquantes  
+
+2. **📊 Analyse exploratoire (EDA)**  
+   Visualisations, corrélations, insights  
+
+3. **🧹 Prétraitement des données**  
+   Nettoyage, encodage, normalisation  
+
+4. **🤖 Modélisation**  
+   Modèles testés :  
+   - Régression logistique  
+   - Arbre de décision  
+   - Random Forest  
+   - **XGBoost** (retenu comme modèle final)
+
+5. **📈 Évaluation des performances**  
+   - Accuracy  
+   - Recall  
+   - Precision  
+   - AUC-ROC  
+
+6. **🔍 Interprétation & Visualisation**  
+   - Importance des variables  
+   - SHAP (interprétabilité)
+
+---
+
+## 🖥️ Interface Web avec Streamlit
+
+Une application Streamlit interactive a été développée pour :
+
+- ✅ Saisir les données d’un client
+- ✅ Obtenir une **prédiction instantanée**
+- ✅ Visualiser la probabilité de défaut dans un graphique clair
+
+📍 Lien vers l’application :  
+👉 [https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app)
+
+---
+
+## 🚀 Lancer l’application en local
+
+### 1. Cloner le dépôt
+
+```bash
+git clone https://github.com/votre-nom/analyse-du-risque-de-defaut-de-paiement
+cd analyse-du-risque-de-defaut-de-paiement
