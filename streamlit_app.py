@@ -3,39 +3,57 @@ import pandas as pd
 import numpy as np
 import joblib
 
-# === Charger le modèle et la liste des features ===
-model, feature_names = joblib.load("xgboost_credit_model.pkl")
+# Charger le modèle
+model = joblib.load("xgboost_credit_model.pkl")
 
-st.title(" Prédiction du Risque de Défaut de Paiement (XGBoost)")
-st.markdown("Remplissez les informations ci-dessous pour évaluer le risque de crédit.")
+st.title("💳 Prédiction du Risque de Défaut de Paiement")
 
-# === Interface utilisateur ===
-limit_bal = st.number_input("Montant de crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1000000, step=10000)
-sex = st.selectbox("Sexe", options=[1, 2], format_func=lambda x: {1: "Homme", 2: "Femme"}.get(x))
-education = st.selectbox("Niveau d'éducation", options=[1, 2, 3, 4], format_func=lambda x: {1: "Université", 2: "École Supérieure", 3: "Lycée", 4: "Autre"}.get(x))
-marriage = st.selectbox("Statut marital", options=[1, 2, 3], format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}.get(x))
-age = st.number_input("Âge du client", min_value=18, max_value=100, step=1)
-pay_0 = st.number_input("Historique de paiement PAY_0", min_value=-2, max_value=9, step=1)
-pay_2 = st.number_input("Historique de paiement PAY_2", min_value=-2, max_value=9, step=1)
-pay_3 = st.number_input("Historique de paiement PAY_3", min_value=-2, max_value=9, step=1)
-pay_4 = st.number_input("Historique de paiement PAY_4", min_value=-2, max_value=9, step=1)
-pay_5 = st.number_input("Historique de paiement PAY_5", min_value=-2, max_value=9, step=1)
-pay_6 = st.number_input("Historique de paiement PAY_6", min_value=-2, max_value=9, step=1)
-bill_amt1 = st.number_input("BILL_AMT1", step=1000)
-bill_amt2 = st.number_input("BILL_AMT2", step=1000)
-bill_amt3 = st.number_input("BILL_AMT3", step=1000)
-bill_amt4 = st.number_input("BILL_AMT4", step=1000)
-bill_amt5 = st.number_input("BILL_AMT5", step=1000)
-bill_amt6 = st.number_input("BILL_AMT6", step=1000)
-pay_amt1 = st.number_input("PAY_AMT1", step=1000)
-pay_amt2 = st.number_input("PAY_AMT2", step=1000)
-pay_amt3 = st.number_input("PAY_AMT3", step=1000)
-pay_amt4 = st.number_input("PAY_AMT4", step=1000)
-pay_amt5 = st.number_input("PAY_AMT5", step=1000)
-pay_amt6 = st.number_input("PAY_AMT6", step=1000)
+st.markdown("Remplissez les informations ci-dessous pour évaluer le risque de crédit :")
 
-# === Rassembler les données dans un DataFrame ===
-user_data = pd.DataFrame([{
+# Organiser les entrées en colonnes
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    limit_bal = st.number_input("💰 Crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1000000, step=10000)
+    age = st.number_input("🎂 Âge", min_value=18, max_value=100)
+    sex = st.selectbox("Sexe", [1, 2], format_func=lambda x: "Homme" if x == 1 else "Femme")
+    education = st.selectbox("🎓 Éducation", [1, 2, 3, 4], format_func=lambda x: {1: "Université", 2: "Supérieur", 3: "Lycée", 4: "Autre"}[x])
+    marriage = st.selectbox("💍 Statut marital", [1, 2, 3], format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}[x])
+
+with col2:
+    pay_0 = st.number_input("📅 Statut remboursement dernier mois (PAY_0)", step=1)
+    pay_2 = st.number_input("📅 Statut remboursement il y a 2 mois (PAY_2)", step=1)
+    pay_3 = st.number_input("📅 Statut remboursement il y a 3 mois (PAY_3)", step=1)
+    pay_4 = st.number_input("📅 Statut remboursement il y a 4 mois (PAY_4)", step=1)
+    pay_5 = st.number_input("📅 Statut remboursement il y a 5 mois (PAY_5)", step=1)
+    pay_6 = st.number_input("📅 Statut remboursement il y a 6 mois (PAY_6)", step=1)
+
+with col3:
+    bill_amt1 = st.number_input("💸 Montant facture mois-1 (BILL_AMT1)", step=1000)
+    bill_amt2 = st.number_input("💸 Montant facture mois-2 (BILL_AMT2)", step=1000)
+    bill_amt3 = st.number_input("💸 Montant facture mois-3 (BILL_AMT3)", step=1000)
+    bill_amt4 = st.number_input("💸 Montant facture mois-4 (BILL_AMT4)", step=1000)
+    bill_amt5 = st.number_input("💸 Montant facture mois-5 (BILL_AMT5)", step=1000)
+    bill_amt6 = st.number_input("💸 Montant facture mois-6 (BILL_AMT6)", step=1000)
+
+# Ligne supplémentaire pour les paiements effectués
+st.markdown("### 💵 Paiements effectués par mois :")
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    pay_amt1 = st.number_input("PAYÉ mois-1 (PAY_AMT1)", step=1000)
+    pay_amt2 = st.number_input("PAYÉ mois-2 (PAY_AMT2)", step=1000)
+
+with col5:
+    pay_amt3 = st.number_input("PAYÉ mois-3 (PAY_AMT3)", step=1000)
+    pay_amt4 = st.number_input("PAYÉ mois-4 (PAY_AMT4)", step=1000)
+
+with col6:
+    pay_amt5 = st.number_input("PAYÉ mois-5 (PAY_AMT5)", step=1000)
+    pay_amt6 = st.number_input("PAYÉ mois-6 (PAY_AMT6)", step=1000)
+
+# Préparation des données
+input_data = pd.DataFrame([{
     'LIMIT_BAL': limit_bal,
     'SEX': sex,
     'EDUCATION': education,
@@ -61,16 +79,13 @@ user_data = pd.DataFrame([{
     'PAY_AMT6': pay_amt6
 }])
 
-# Réorganiser les colonnes
-user_data = user_data[feature_names]
+# Prédiction
+if st.button("🎯 Prédire le risque"):
+    prediction = model.predict(input_data)[0]
+    probability = model.predict_proba(input_data)[0][1]
 
-# === Prédiction ===
-if st.button("Prédire"):
-    prediction = model.predict(user_data)[0]
-    probability = model.predict_proba(user_data)[0][1]
-
+    st.markdown("---")
     if prediction == 1:
-        st.error(f" Risque élevé de défaut. Probabilité : {probability:.2%}")
+        st.error(f"⚠️ Risque élevé de défaut ! Probabilité : {probability:.2%}")
     else:
-        st.success(f"Faible risque de défaut. Probabilité : {probability:.2%}")
-
+        st.success(f"✅ Faible risque de défaut. Probabilité : {probability:.2%}")
