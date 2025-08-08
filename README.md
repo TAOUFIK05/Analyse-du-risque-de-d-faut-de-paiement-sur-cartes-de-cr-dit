@@ -3,7 +3,7 @@
 ## 🔗 Accès à l'application Streamlit
 
 👉 Tester l'application [ici](https://risque-creditt.streamlit.app/)
-
+<a href="https://risque-creditt.streamlit.app/" target="_blank">Tester l'application</a>
 ---
 
 ## 📁 À propos du dataset
