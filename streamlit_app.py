@@ -52,7 +52,7 @@ with tab1:
     col1, col2 = st.columns(2)
 
     with col1:
-        limit_bal = st.number_input("💰 Montant de crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1_000_000, step=10_000, value=500_000)
+        limit_bal = st.number_input("💰 Montant de crédit autorisé (LIMIT_BAL)", min_value=0, max_value=1_000_000, step=10_000, value=50_000)
         sex = st.selectbox("👤 Sexe", options=[1, 2], format_func=lambda x: {1: "Homme", 2: "Femme"}[x])
         education = st.selectbox("🎓 Niveau d'éducation", options=[1, 2, 3, 4], format_func=lambda x: {1: "Université", 2: "École Supérieure", 3: "Lycée", 4: "Autre"}[x])
         marriage = st.selectbox("💍 Statut marital", options=[1, 2, 3], format_func=lambda x: {1: "Marié", 2: "Célibataire", 3: "Autre"}[x])
@@ -142,5 +142,6 @@ with tab1:
         else:
             st.success(f"✅ Faible risque de défaut.\nProbabilité estimée : {probability:.2%}")
             st.info("Bonne gestion ! Continuez à maintenir votre profil sain.")
+
 
 
