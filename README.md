@@ -2,7 +2,7 @@
 
 ## 🔗 Accès à l'application Streamlit
 
-👉 Tester l'application [ici](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app/)
+👉 Tester l'application [ici](https://risque-creditt.streamlit.app/)
 
 ---
 
@@ -81,7 +81,7 @@ Une application Streamlit interactive a été développée pour :
 - ✅ Visualiser la probabilité de défaut dans un graphique clair
 
 📍 Lien vers l’application :  
-👉 [https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app](https://analyse-du-risque-de-defaut-de-paiement-sur-cartes-de-credit-a.streamlit.app)
+👉 [https://risque-creditt.streamlit.app/](https://risque-creditt.streamlit.app/)
 
 ---
 
@@ -90,5 +90,5 @@ Une application Streamlit interactive a été développée pour :
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/votre-nom/analyse-du-risque-de-defaut-de-paiement
+git clone https://github.com/TAOUFIK05/analyse-du-risque-de-defaut-de-paiement
 cd analyse-du-risque-de-defaut-de-paiement
