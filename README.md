@@ -5,6 +5,10 @@
 👉 Tester l'application [ici](https://risque-creditt.streamlit.app/)
 
 <a href="https://risque-creditt.streamlit.app/" target="_blank">Tester l'application</a>
+
+📍 Lien vers l’application :  
+👉 <a href="https://risque-creditt.streamlit.app/" target="_blank">Ouvrir l'application</a>
+
 ---
 
 ## 📁 À propos du dataset
